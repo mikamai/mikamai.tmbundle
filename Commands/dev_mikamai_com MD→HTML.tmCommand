@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>beforeRunningCommand</key>
+	<string>nop</string>
+	<key>command</key>
+	<string>#!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby -wKU
+# #!/usr/bin/env bash
+# [[ -f "${TM_SUPPORT_PATH}/lib/bash_init.sh" ]] &amp;&amp; . "${TM_SUPPORT_PATH}/lib/bash_init.sh"
+# 
+# ~/Library/"Application Support"/Avian/Bundles/markdown-redcarpet.tmbundle/Support/bin/"${TM_MARKDOWN:-redcarpet.rb}"
+
+#!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby
+
+# Usage: redcarpet [&lt;file&gt;...]
+# Convert one or more Markdown files to HTML and write to standard output. With
+# no &lt;file&gt; or when &lt;file&gt; is '-', read Markdown source text from standard input.
+if ARGV.include?('--help')
+  File.read(__FILE__).split("\n").grep(/^# /).each do |line|
+    puts line[2..-1]
+  end
+  exit 0
+end
+
+require 'rubygems'
+
+begin
+  require 'redcarpet'
+  require 'pygments'
+rescue LoadError
+  puts &lt;&lt;-HTML
+    &lt;style&gt;
+    .error h2 {color: red;}
+    .error .hint h3 {color: #555;}
+    &lt;/style&gt;
+
+    &lt;div class="error"&gt;
+      &lt;h2&gt;Please install the following gems on your system Ruby&lt;/h2&gt;
+
+      &lt;h3&gt;Step 1: Install the required gems&lt;/h3&gt;
+      &lt;pre&gt;&lt;code&gt;
+        sudo gem install redcarpet -v 2.3.0
+      &lt;/code&gt;&lt;/pre&gt;
+
+      &lt;div class="hint"&gt;
+        &lt;h3&gt;WARNING: If you're using a Ruby version manager activate the system Ruby first&lt;/h3&gt;
+        &lt;pre&gt;&lt;code&gt;
+          rvm use system                          # for RVM
+          expoprt RBENV_VERSION="system"          # for rbenv
+        &lt;/code&gt;&lt;/pre&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    HTML
+  exit 0
+end
+
+require 'erb'
+class HTMLwithHighlightJS &lt; Redcarpet::Render::HTML
+  def block_code(code, language)
+    language ||= 'text'
+    &lt;&lt;-HTML
+    &lt;pre&gt;&lt;code class="#{language}"&gt;#{ERB::Util.h code}&lt;/code&gt;&lt;/pre&gt;
+    HTML
+  end
+end
+
+def markdown(text)
+  # renderer = HTMLwithPygments.new(:hard_wrap =&gt; true, :filter_html =&gt; true)
+  renderer = HTMLwithHighlightJS.new(:hard_wrap =&gt; true, :filter_html =&gt; true)
+  options = {
+    :autolink            =&gt; true,
+    :space_after_headers =&gt; true,
+    :fenced_code_blocks  =&gt; true,
+    :tables              =&gt; true,
+    :strikethrough       =&gt; true,
+    :smart               =&gt; true,
+    :hard_wrap           =&gt; true,
+    :safelink            =&gt; true,
+    :no_intraemphasis    =&gt; true,
+  }
+  Redcarpet::Markdown.new(renderer, options).render(text)
+end
+
+
+puts markdown(ARGF.read)
+
+</string>
+	<key>input</key>
+	<string>document</string>
+	<key>inputFormat</key>
+	<string>text</string>
+	<key>name</key>
+	<string>dev.mikamai.com MD→HTML</string>
+	<key>outputCaret</key>
+	<string>heuristic</string>
+	<key>outputFormat</key>
+	<string>text</string>
+	<key>outputLocation</key>
+	<string>newWindow</string>
+	<key>scope</key>
+	<string>text.html.markdown</string>
+	<key>uuid</key>
+	<string>301516AB-9DDB-403E-B17F-F0C3F228A6F5</string>
+	<key>version</key>
+	<integer>2</integer>
+</dict>
+</plist>

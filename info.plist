@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>contactEmailRot13</key>
+	<string>ryvn@fpuvgb.zr</string>
+	<key>contactName</key>
+	<string>Elia Schito</string>
+	<key>description</key>
+	<string>Mikamai specific stuff</string>
+	<key>name</key>
+	<string>Mikamai</string>
+	<key>uuid</key>
+	<string>8C5E4997-4774-4C8F-A016-3E3468AC77E4</string>
+</dict>
+</plist>
