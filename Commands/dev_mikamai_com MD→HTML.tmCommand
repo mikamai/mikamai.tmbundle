@@ -6,12 +6,6 @@
 	<string>nop</string>
 	<key>command</key>
 	<string>#!/System/Library/Frameworks/Ruby.framework/Versions/2.0/usr/bin/ruby
-# #!/usr/bin/env bash
-# [[ -f "${TM_SUPPORT_PATH}/lib/bash_init.sh" ]] &amp;&amp; . "${TM_SUPPORT_PATH}/lib/bash_init.sh"
-# 
-# ~/Library/"Application Support"/Avian/Bundles/markdown-redcarpet.tmbundle/Support/bin/"${TM_MARKDOWN:-redcarpet.rb}"
-
-#!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby
 
 # Usage: redcarpet [&lt;file&gt;...]
 # Convert one or more Markdown files to HTML and write to standard output. With
@@ -26,32 +20,23 @@ end
 require 'rubygems'
 
 begin
+  gem 'redcarpet', '2.3.0'
   require 'redcarpet'
   require 'pygments'
 rescue LoadError
-  puts &lt;&lt;-HTML
-    &lt;style&gt;
-    .error h2 {color: red;}
-    .error .hint h3 {color: #555;}
-    &lt;/style&gt;
+  puts &lt;&lt;-MD
+## Please install the following gems on your system Ruby
+### Step 1: Install the required gems
 
-    &lt;div class="error"&gt;
-      &lt;h2&gt;Please install the following gems on your system Ruby&lt;/h2&gt;
+    sudo /System/Library/Frameworks/Ruby.framework/Versions/2.0/usr/bin/gem install redcarpet -v 2.3.0
+    sudo /System/Library/Frameworks/Ruby.framework/Versions/2.0/usr/bin/gem install pygments.rb
 
-      &lt;h3&gt;Step 1: Install the required gems&lt;/h3&gt;
-      &lt;pre&gt;&lt;code&gt;
-        sudo gem install redcarpet -v 2.3.0
-      &lt;/code&gt;&lt;/pre&gt;
+### WARNING: If you're using a Ruby version manager activate the system Ruby first
 
-      &lt;div class="hint"&gt;
-        &lt;h3&gt;WARNING: If you're using a Ruby version manager activate the system Ruby first&lt;/h3&gt;
-        &lt;pre&gt;&lt;code&gt;
-          rvm use system                          # for RVM
-          expoprt RBENV_VERSION="system"          # for rbenv
-        &lt;/code&gt;&lt;/pre&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
-    HTML
+    rvm use system                          # for RVM
+    expoprt RBENV_VERSION="system"          # for rbenv
+
+    MD
   exit 0
 end
 
